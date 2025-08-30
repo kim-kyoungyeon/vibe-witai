@@ -1,0 +1,11 @@
+
+
+.git
+.gitignore
+README.md
+.env
+.env.sample
+Dockerfile
+.dockerignore
+public/
+*.log

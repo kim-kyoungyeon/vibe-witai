@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: witme-ai
+    env: docker
+    plan: free
+    buildCommand: docker build -t witme-ai .
+    startCommand: ./main
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: FIREBASE_WEB_API_KEY
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        value: witme-ai-2ed8d
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: firebase-service-account.json
