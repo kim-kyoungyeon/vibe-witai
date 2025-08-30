@@ -16,6 +16,9 @@ func main() {
 	if os.Getenv("YOUTUBE_API_KEY") == "" || os.Getenv("OPENAI_API_KEY") == "" {
 		log.Fatal("환경변수 YOUTUBE_API_KEY, OPENAI_API_KEY를 설정하세요.")
 	}
+	if os.Getenv("FIREBASE_WEB_API_KEY") == "" {
+		log.Fatal("환경변수 FIREBASE_WEB_API_KEY를 설정하세요.")
+	}
 	// Firestore 초기화
 	projectID := os.Getenv("FIREBASE_PROJECT_ID")
 	if projectID == "" {
@@ -39,6 +42,12 @@ func main() {
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
-	log.Println("서버 시작: http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// 포트 설정 (환경변수 또는 기본값)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("서버 시작: http://localhost:%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

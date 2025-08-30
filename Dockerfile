@@ -28,5 +28,8 @@ COPY --from=builder /app/firebase-service-account.json .
 # Expose port
 EXPOSE 8080
 
+# Set environment variable for port
+ENV PORT=8080
+
 # Run the application
 CMD ["./main"]

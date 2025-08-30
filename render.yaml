@@ -16,3 +16,5 @@ services:
         value: witme-ai-2ed8d
       - key: GOOGLE_APPLICATION_CREDENTIALS
         value: firebase-service-account.json
+      - key: PORT
+        value: 8080
