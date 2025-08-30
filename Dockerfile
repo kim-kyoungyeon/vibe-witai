@@ -23,7 +23,6 @@ WORKDIR /root/
 # Copy the binary from builder stage
 COPY --from=builder /app/main .
 COPY --from=builder /app/web ./web
-COPY --from=builder /app/firebase-service-account.json .
 
 # Expose port
 EXPOSE 8080

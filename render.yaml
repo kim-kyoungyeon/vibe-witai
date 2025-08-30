@@ -14,7 +14,7 @@ services:
         sync: false
       - key: FIREBASE_PROJECT_ID
         value: witme-ai-2ed8d
-      - key: GOOGLE_APPLICATION_CREDENTIALS
-        value: firebase-service-account.json
+      - key: FIREBASE_SERVICE_ACCOUNT_KEY
+        sync: false
       - key: PORT
         value: 8080

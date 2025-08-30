@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 
 	"cloud.google.com/go/firestore"
@@ -12,11 +13,37 @@ var firestoreClient *firestore.Client
 
 func InitFirestore(projectID string) error {
 	ctx := context.Background()
-	sa := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(sa))
+	
+	// Firebase 서비스 계정 키를 환경변수에서 가져오기
+	serviceAccountKey := os.Getenv("FIREBASE_SERVICE_ACCOUNT_KEY")
+	
+	var client *firestore.Client
+	var err error
+	
+	if serviceAccountKey != "" {
+		// 환경변수에서 JSON 키를 파싱
+		var credentials map[string]interface{}
+		if err := json.Unmarshal([]byte(serviceAccountKey), &credentials); err != nil {
+			return err
+		}
+		
+		// JSON 키를 사용해서 클라이언트 생성
+		client, err = firestore.NewClient(ctx, projectID, option.WithCredentialsJSON([]byte(serviceAccountKey)))
+	} else {
+		// 파일 경로에서 키를 읽기 (로컬 개발용)
+		saPath := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+		if saPath != "" {
+			client, err = firestore.NewClient(ctx, projectID, option.WithCredentialsFile(saPath))
+		} else {
+			// 기본 인증 사용 (Google Cloud 환경에서)
+			client, err = firestore.NewClient(ctx, projectID)
+		}
+	}
+	
 	if err != nil {
 		return err
 	}
+	
 	firestoreClient = client
 	return nil
 }
